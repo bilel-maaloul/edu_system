@@ -1,4 +1,3 @@
-
 import { User, Notification, NotificationType } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -6,19 +5,22 @@ import { v4 as uuidv4 } from "uuid";
 // This pattern defines a one-to-many dependency between objects so that when one object changes state,
 // all its dependents are notified and updated automatically
 
-// Subject (Observable)
+// Subject (Observable) Interface
+// Defines the contract for adding, removing and notifying observers
 export interface Subject {
   register(observer: Observer): void;
   unregister(observer: Observer): void;
   notifyObservers(data: any): void;
 }
 
-// Observer
+// Observer Interface
+// Defines the update method that concrete observers must implement
 export interface Observer {
   update(data: any): void;
 }
 
-// Concrete Subject: Course
+// Concrete Subject: CourseSubject
+// Implements the Subject interface and maintains a list of observers
 export class CourseSubject implements Subject {
   private observers: Observer[] = [];
   private courseId: string;
@@ -27,6 +29,7 @@ export class CourseSubject implements Subject {
     this.courseId = courseId;
   }
   
+  // Implementation of Subject interface methods
   register(observer: Observer): void {
     const isExist = this.observers.includes(observer);
     if (!isExist) {
@@ -86,7 +89,8 @@ export class CourseSubject implements Subject {
   }
 }
 
-// Concrete Observer: Student Notification
+// Concrete Observer: StudentNotificationObserver
+// Implements the Observer interface and defines specific update behavior
 export class StudentNotificationObserver implements Observer {
   private student: User;
   
@@ -94,6 +98,7 @@ export class StudentNotificationObserver implements Observer {
     this.student = student;
   }
   
+  // Implementation of Observer interface method
   update(data: any): void {
     let notification: Notification | null = null;
     
@@ -103,7 +108,7 @@ export class StudentNotificationObserver implements Observer {
           id: uuidv4(),
           userId: this.student.id,
           title: 'New Assignment',
-          message: `A new assignment "${data.details.assignmentTitle}" has been added to your course.`,
+          message: A new assignment "${data.details.assignmentTitle}" has been added to your course.,
           type: NotificationType.ASSIGNMENT,
           isRead: false,
           createdAt: new Date()
@@ -115,7 +120,7 @@ export class StudentNotificationObserver implements Observer {
             id: uuidv4(),
             userId: this.student.id,
             title: 'Grade Posted',
-            message: `Your grade for "${data.details.assignmentTitle}" has been posted.`,
+            message: Your grade for "${data.details.assignmentTitle}" has been posted.,
             type: NotificationType.GRADE,
             isRead: false,
             createdAt: new Date()
@@ -137,7 +142,8 @@ export class StudentNotificationObserver implements Observer {
     
     if (notification) {
       // In a real app, we would store this notification and inform the user
-      console.log(`Notification for ${this.student.name}:`, notification);
+      console.log(Notification for ${this.student.name}:, notification);
     }
   }
 }
+this.student.id
